@@ -1,0 +1,9 @@
+[submodule "navigation"]
+	path = navigation
+	url = https://github.com/BatoSEC25-ECN/navigation.git
+[submodule "girouette"]
+	path = girouette
+	url = https://github.com/BatoSEC25-ECN/girouette.git
+[submodule "capteurs"]
+	path = capteurs
+	url = https://github.com/BatoSEC25-ECN/capteurs.git
