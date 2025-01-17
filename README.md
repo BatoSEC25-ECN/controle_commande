@@ -2,6 +2,8 @@
 
 Lien vers le projet 23-24 : [https://gitlab.univ-nantes.fr/hladik-pe-1/sec3-projet-2324](https://gitlab.univ-nantes.fr/hladik-pe-1/sec3-projet-2324)
 
+PCB et code de base [https://gitlab.univ-nantes.fr/sec/basebateau](https://gitlab.univ-nantes.fr/sec/basebateau)
+
 ## Getting started
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
