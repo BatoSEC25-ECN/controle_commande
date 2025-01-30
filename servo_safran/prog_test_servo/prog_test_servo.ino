@@ -13,13 +13,14 @@ Servo myservo;  // create servo object to control a servo
 // twelve servo objects can be created on most boards
 
 int pos = 0;    // variable to store the servo position
-uint delay_between_2_pos = 30;
-int pos_min = 70;
+uint delay_between_2_pos = 8;
+int pos_min = 0;
 int pos_max = 180;
 // position 0° est donc à (pos_max - pos_min) / 2 + pos_min soit 125° pour pos min = 70° et pos max = 180°
 
 void setup() {
-  myservo.attach(12);  // attaches the servo on pin 9 to the servo object
+  // myservo.attach(12);  // attaches the servo on pin 9 to the servo object
+  myservo.attach(12, 940, 1640); // Broche 9, largeur d'impulsion min = 960µs, max = 1640µs
 }
 
 void loop() {
@@ -36,5 +37,5 @@ void loop() {
   }
   delay(1000);
   myservo.write((pos_max - pos_min) / 2 + pos_min);
-  delay(1000);
+  delay(5000);
 }
