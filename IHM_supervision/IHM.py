@@ -1,4 +1,6 @@
 from tkinter import Tk, Label, Entry, Button, INSERT
+import serial
+import serial.tools.list_ports
 
 # Classe pour stocker les informations du port
 class SerialPort:
@@ -7,20 +9,38 @@ class SerialPort:
         self.Speed = 9600
 
 myport = SerialPort()
+serial_connection = None
 ApplicationGL = False
 
 # Fonction pour envoyer les données d'un champ
-
 def send_data(field_name, field_value):
-    print(f"Sending {field_name}: {field_value}")  # Remplace par l'envoi réel si nécessaire
+    global serial_connection
+    if serial_connection:
+        try:
+            message = f"{field_name} {field_value} \n"
+            serial_connection.write(message.encode())
+            print(f"Sent: {message}")
+        except Exception as e:
+            print(f"Error sending data: {e}")
+    else:
+        print("Serial connection is not established.")
+
+# Fonction pour configurer et ouvrir la connexion série
+def setup_serial_connection():
+    global serial_connection
+    try:
+        serial_connection = serial.Serial(myport.Name, int(myport.Speed), timeout=1)
+        print(f"Connected to {myport.Name} at {myport.Speed} baud.")
+    except Exception as e:
+        print(f"Error connecting to serial port: {e}")
 
 # Fonction pour afficher la seconde page (paramètres)
 def open_parameters_window():
     def validate_offset():
-        send_data("Offset", offset_entry.get())
+        send_data("Boussole", offset_entry.get())
 
     def validate_coef():
-        send_data("Coef P", coef_entry.get())
+        send_data("Coeff", coef_entry.get())
 
     def validate_cap():
         send_data("Cap", cap_entry.get())
@@ -65,6 +85,7 @@ def RunApplication():
     myport.Speed = Baud_entry.get()
     ApplicationGL = True
     ConfWindw.destroy()
+    setup_serial_connection()
     open_parameters_window()
 
 # Configuration de la fenêtre Tkinter
