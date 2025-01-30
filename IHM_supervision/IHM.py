@@ -17,7 +17,7 @@ def send_data(field_name, field_value):
     global serial_connection
     if serial_connection:
         try:
-            message = f"{field_name} {field_value} \n"
+            message = f"{field_name} {field_value}\n"
             serial_connection.write(message.encode())
             print(f"Sent: {message}")
         except Exception as e:
@@ -36,45 +36,56 @@ def setup_serial_connection():
 
 # Fonction pour afficher la seconde page (paramètres)
 def open_parameters_window():
-    def validate_offset():
-        send_data("Boussole", offset_entry.get())
-
-    def validate_coef():
-        send_data("Coeff", coef_entry.get())
-
     def validate_cap():
-        send_data("Cap", cap_entry.get())
+        send_data("cap", cap_entry.get())
+
+    def validate_coeffP():
+        send_data("coeffP", coeffP_entry.get())
+
+    def validate_coeffI():
+        send_data("coeffI", coeffI_entry.get())
+
+    def validate_offset():
+        send_data("compass", offset_entry.get())
 
     param_window = Tk()
     param_window.title("Enter Parameters")
     param_window.configure(bg="#2E2D40")
-    param_window.geometry('400x300')
+    param_window.geometry('450x300')
     param_window.resizable(width=False, height=False)
     positionRight = int(param_window.winfo_screenwidth()/2 - 400/2)
     positionDown = int(param_window.winfo_screenheight()/2 - 300/2)
     param_window.geometry("+{}+{}".format(positionRight, positionDown))
 
     # Labels, champs de saisie et boutons pour les paramètres
-    offset_label = Label(param_window, text="Offset:", font=("", 12), justify="right", bg="#2E2D40", fg="#FFFFFF")
-    offset_label.place(x=50, y=50, anchor="center")
-    offset_entry = Entry(param_window, width=20, bg="#37364D", fg="#FFFFFF", justify="center")
-    offset_entry.place(x=200, y=50, anchor="center")
-    offset_button = Button(param_window, text="Validate", command=validate_offset, bg="#135EF2", fg="#FFFFFF", activebackground="#0D47A1", activeforeground="#FFFFFF", relief="raised", bd=2)
-    offset_button.place(x=350, y=50, anchor="center")
-
-    coef_label = Label(param_window, text="Coef P:", font=("", 12), justify="right", bg="#2E2D40", fg="#FFFFFF")
-    coef_label.place(x=50, y=120, anchor="center")
-    coef_entry = Entry(param_window, width=20, bg="#37364D", fg="#FFFFFF", justify="center")
-    coef_entry.place(x=200, y=120, anchor="center")
-    coef_button = Button(param_window, text="Validate", command=validate_coef, bg="#135EF2", fg="#FFFFFF", activebackground="#0D47A1", activeforeground="#FFFFFF", relief="raised", bd=2)
-    coef_button.place(x=350, y=120, anchor="center")
-
-    cap_label = Label(param_window, text="Cap:", font=("", 12), justify="right", bg="#2E2D40", fg="#FFFFFF")
-    cap_label.place(x=50, y=190, anchor="center")
+    cap_label = Label(param_window, text="Cap souhaité (en °):", font=("", 12), justify="right", bg="#2E2D40", fg="#FFFFFF")
+    cap_label.place(x=80, y=50, anchor="center")
     cap_entry = Entry(param_window, width=20, bg="#37364D", fg="#FFFFFF", justify="center")
-    cap_entry.place(x=200, y=190, anchor="center")
+    cap_entry.place(x=230, y=50, anchor="center")
     cap_button = Button(param_window, text="Validate", command=validate_cap, bg="#135EF2", fg="#FFFFFF", activebackground="#0D47A1", activeforeground="#FFFFFF", relief="raised", bd=2)
-    cap_button.place(x=350, y=190, anchor="center")
+    cap_button.place(x=380, y=50, anchor="center")
+
+    coeffP_label = Label(param_window, text="Coefficient P:", font=("", 12), justify="right", bg="#2E2D40", fg="#FFFFFF")
+    coeffP_label.place(x=80, y=120, anchor="center")
+    coeffP_entry = Entry(param_window, width=20, bg="#37364D", fg="#FFFFFF", justify="center")
+    coeffP_entry.place(x=230, y=120, anchor="center")
+    coeffP_button = Button(param_window, text="Validate", command=validate_coeffP, bg="#135EF2", fg="#FFFFFF", activebackground="#0D47A1", activeforeground="#FFFFFF", relief="raised", bd=2)
+    coeffP_button.place(x=380, y=120, anchor="center")
+
+    coeffI_label = Label(param_window, text="Coefficient I:", font=("", 12), justify="right", bg="#2E2D40", fg="#FFFFFF")
+    coeffI_label.place(x=80, y=190, anchor="center")
+    coeffI_entry = Entry(param_window, width=20, bg="#37364D", fg="#FFFFFF", justify="center")
+    coeffI_entry.place(x=230, y=190, anchor="center")
+    coeffI_button = Button(param_window, text="Validate", command=validate_coeffI, bg="#135EF2", fg="#FFFFFF", activebackground="#0D47A1", activeforeground="#FFFFFF", relief="raised", bd=2)
+    coeffI_button.place(x=380, y=190, anchor="center")
+
+    offset_label = Label(param_window, text="Offset boussole:", font=("", 12), justify="right", bg="#2E2D40", fg="#FFFFFF")
+    offset_label.place(x=80, y=260, anchor="center")
+    offset_entry = Entry(param_window, width=20, bg="#37364D", fg="#FFFFFF", justify="center")
+    offset_entry.place(x=230, y=260, anchor="center")
+    offset_button = Button(param_window, text="Validate", command=validate_offset, bg="#135EF2", fg="#FFFFFF", activebackground="#0D47A1", activeforeground="#FFFFFF", relief="raised", bd=2)
+    offset_button.place(x=380, y=260, anchor="center")
+    
 
     param_window.mainloop()
 
