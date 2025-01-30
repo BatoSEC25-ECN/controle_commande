@@ -89,15 +89,42 @@ def open_parameters_window():
 
     param_window.mainloop()
 
+# Fonction pour valider les paramètres de port
+def validate_port():
+    global myport
+    myport.Name = Port_entry.get()
+    try:
+        myport.Speed = int(Baud_entry.get())
+    except ValueError:
+        print("Vitesse doit être un entier")
+        return False
+
+    # if not myport.Name.startswith("COM") or not myport.Name[3:].isdigit():
+    #     print("Port COM invalide")
+    #     return False
+
+    if myport.Speed not in [1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200]:
+        print("Vitesse invalide")
+        return False
+
+    # Vérifier si le port est disponible
+    ports = serial.tools.list_ports.comports()
+    for port in ports:
+        if port.device == myport.Name:
+            return True
+    print("Port COM non disponible")
+    return False
+
 # Fonction pour lancer l'application
 def RunApplication():
     global ApplicationGL
-    myport.Name = Port_entry.get()
-    myport.Speed = Baud_entry.get()
-    ApplicationGL = True
-    ConfWindw.destroy()
-    setup_serial_connection()
-    open_parameters_window()
+    if validate_port():
+        ApplicationGL = True
+        ConfWindw.destroy()
+        setup_serial_connection()
+        open_parameters_window()
+    else:
+        print("Erreur dans les paramètres de port")
 
 # Configuration de la fenêtre Tkinter
 ConfWindw = Tk()
