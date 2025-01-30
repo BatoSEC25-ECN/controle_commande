@@ -63,7 +63,7 @@ void setup() {
   SD.begin(SS_pin);
   String file_name = "DATA" + String(millis()) + ".CSV";
   dataFile = SD.open(file_name, FILE_WRITE);
-  dataFile.println("Timestamp,Acceleration_X,Acceleration_Y,Acceleration_Z,Rate_X,Rate_Y,Rate_Z,Quaternion_W,Quaternion_X,Quaternion_Y,Quaternion_Z,Mag_X,Mag_Y,Mag_Z,Latitude,Longitude,Altitude,Speed,Date,Time");
+  dataFile.println("Timestamp,Acceleration_X,Acceleration_Y,Acceleration_Z,Rate_X,Rate_Y,Rate_Z,Quaternion_W,Quaternion_X,Quaternion_Y,Quaternion_Z,Mag_X,Mag_Y,Mag_Z,Azimuth,Latitude,Longitude,Altitude,Speed,Date,Time");
   dataFile.flush();
 
   // --- GPS --- //
@@ -143,6 +143,7 @@ void loop() {
     int mx = compass.getX();
     int my = compass.getY();
     int mz = compass.getZ();
+    int azimuth = compass.getAzimuth();
 
     // --- SD card --- //
     // Écriture des données dans le fichier CSV
@@ -161,6 +162,7 @@ void loop() {
     dataFile.print(mx); dataFile.print(',');
     dataFile.print(my); dataFile.print(',');
     dataFile.print(mz); dataFile.print(',');
+    dataFile.print(azimuth); dataFile.print(',');
     dataFile.print(latitude, 6); dataFile.print(',');
     dataFile.print(longitude, 6); dataFile.print(',');
     dataFile.print(altitude, 2); dataFile.print(',');
@@ -173,28 +175,30 @@ void loop() {
     dataFile.flush();
 
     // Debug terminal
-    // Serial.print("Acc: ");
-    // Serial.print(acc.x); Serial.print(", "); Serial.print(acc.y); Serial.print(", ");
-    // Serial.print(acc.z); 
-    // Serial.print(", Rate: "); 
-    // Serial.print(gyro.x); Serial.print(", "); Serial.print(gyro.y); Serial.print(", "); 
-    // Serial.print(gyro.z);
-    // Serial.print(", Quaternion: "); 
-    // Serial.print(q.w); Serial.print(", "); Serial.print(q.x); Serial.print(", "); 
-    // Serial.print(q.y); Serial.print(", "); Serial.print(q.z);
-    // Serial.print(" | Mag: ");
-    // Serial.print(mx); Serial.print(", "); Serial.print(my); Serial.print(", ");
-    // Serial.print(mz);
-    // Serial.print(" | Time: " + String(hour) + "h" + String(minute) + "mn" + String(second) + "." + String(centisecond) + "s");
-    // Serial.print(", Lat: ");
-    // Serial.print(latitude, 6);
-    // Serial.print(", Lon: ");
-    // Serial.print(longitude, 6);
-    // Serial.print(", Alti: ");
-    // Serial.print(altitude, 2);
-    // Serial.print("m, Speed: ");
-    // Serial.print(speed, 2);
-    // Serial.println("km/h");
+    Serial.print("Acc: ");
+    Serial.print(acc.x); Serial.print(", "); Serial.print(acc.y); Serial.print(", ");
+    Serial.print(acc.z); 
+    Serial.print(", Rate: "); 
+    Serial.print(gyro.x); Serial.print(", "); Serial.print(gyro.y); Serial.print(", "); 
+    Serial.print(gyro.z);
+    Serial.print(", Quaternion: "); 
+    Serial.print(q.w); Serial.print(", "); Serial.print(q.x); Serial.print(", "); 
+    Serial.print(q.y); Serial.print(", "); Serial.print(q.z);
+    Serial.print(" | Mag: ");
+    Serial.print(mx); Serial.print(", "); Serial.print(my); Serial.print(", ");
+    Serial.print(mz);
+    Serial.print(" | Azim: ");
+    Serial.print(azimuth);
+    Serial.print(" | Time: " + String(hour) + "h" + String(minute) + "mn" + String(second) + "." + String(centisecond) + "s");
+    Serial.print(", Lat: ");
+    Serial.print(latitude, 6);
+    Serial.print(", Lon: ");
+    Serial.print(longitude, 6);
+    Serial.print(", Alti: ");
+    Serial.print(altitude, 2);
+    Serial.print("m, Speed: ");
+    Serial.print(speed, 2);
+    Serial.println("km/h");
 
   } else {
     // Erreur d'ouverture du fichier
