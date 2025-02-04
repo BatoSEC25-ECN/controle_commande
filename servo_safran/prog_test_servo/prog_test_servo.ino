@@ -1,41 +1,44 @@
-/* Sweep
- by BARRAGAN <http://barraganstudio.com>
- This example code is in the public domain.
-
- modified 8 Nov 2013
- by Scott Fitzgerald
- https://www.arduino.cc/en/Tutorial/LibraryExamples/Sweep
+/* Sweep using writeMicroseconds
+ This example uses direct pulse widths to control the servo
 */
 
 #include <Servo.h>
 
-Servo myservo;  // create servo object to control a servo
-// twelve servo objects can be created on most boards
+Servo myservo;  // Create a servo object to control a servo
 
-int pos = 0;    // variable to store the servo position
-uint delay_between_2_pos = 8;
-int pos_min = 0;
-int pos_max = 180;
-// position 0° est donc à (pos_max - pos_min) / 2 + pos_min soit 125° pour pos min = 70° et pos max = 180°
+int pulse_min = 1070;   // Minimum pulse width in microseconds (µs)
+int pulse_max = 1690;  // Maximum pulse width in microseconds (µs)
+int pulse_center = (pulse_max - pulse_min) / 2 + pulse_min; // Center position
+
+uint delay_between_2_pos = 16; // Delay between two positions in milliseconds
 
 void setup() {
-  // myservo.attach(12);  // attaches the servo on pin 9 to the servo object
-  myservo.attach(12, 940, 1640); // Broche 9, largeur d'impulsion min = 960µs, max = 1640µs
+  myservo.attach(28);  // Attach the servo on pin 28
+  Serial.begin(9600);  // Initialize serial communication for debugging
 }
 
 void loop() {
-  for (pos = pos_min; pos <= pos_max; pos += 1) { // goes from 0 degrees to 180 degrees
-    // in steps of 1 degree
-    myservo.write(pos);              // tell servo to go to position in variable 'pos'
-    Serial.print("Position : "); Serial.print(pos); Serial.println("°");
-    delay(delay_between_2_pos);                       // waits 15 ms for the servo to reach the position
+  // Move the servo from pulse_min to pulse_max
+  for (int pulse = pulse_min; pulse <= pulse_max; pulse += 10) { // Increment by 10µs
+    myservo.writeMicroseconds(pulse); // Set the servo position using pulse width
+    Serial.print("Pulse Width: "); Serial.print(pulse); Serial.println(" µs");
+    delay(delay_between_2_pos); // Wait for the servo to reach the position
   }
-  for (pos = pos_max; pos >= pos_min; pos -= 1) { // goes from 180 degrees to 0 degrees
-    myservo.write(pos);              // tell servo to go to position in variable 'pos'
-    Serial.print("Position : "); Serial.print(pos); Serial.println("°");
-    delay(delay_between_2_pos);                       // waits 15 ms for the servo to reach the position
+
+  // Move the servo from pulse_max to pulse_min
+  for (int pulse = pulse_max; pulse >= pulse_min; pulse -= 10) { // Decrement by 10µs
+    myservo.writeMicroseconds(pulse); // Set the servo position using pulse width
+    Serial.print("Pulse Width: "); Serial.print(pulse); Serial.println(" µs");
+    delay(delay_between_2_pos); // Wait for the servo to reach the position
   }
+
+  // Pause for 1 second after completing the full sweep
   delay(1000);
-  myservo.write((pos_max - pos_min) / 2 + pos_min);
+
+  // Move the servo to the center position
+  myservo.writeMicroseconds(pulse_center);
+  Serial.print("Moving to center position: "); Serial.print(pulse_center); Serial.println(" µs");
+  
+  // Pause for 5 seconds at the center position
   delay(5000);
 }
