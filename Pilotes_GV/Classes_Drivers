@@ -1,0 +1,105 @@
+Revoir Navigation face au vent. 
+Implémenter aussi le gite
+
+SE1->SE2->SE3->SE5
+	|
+	|
+	->SE4->SE5
+	
+SE1 : Ouverture_Grand_Voile //Classe Gérant l'ouverture de la Grand voile
+SE2 : Mode_Navigation	    //Méthode déterminant le mode de navigation (face au vent ou bien sous le vent
+SE3 : RG_Face_au_Vent	    //Méthode gérant la position face au vent
+SE4 : RG_Sous_le_Vent  	    //Méthode gérant la position sous le vent
+SE5 : Position_GV	    //Méthode gérant le moteur de gestion de la GV 
+
+
+
+#define FACE_AUX_VENT 0
+#define SOUS_LE_VENT 1
+
+//SE5
+#define POS_MAX_Choq 1.32 ms//position max du moteur  en seconde (temps de l'impulsion à l'état haut). la GV complètement Chqué
+#define POS_MIN_Bord 1.8  ms//position min du moteur  en seconde (temps de l'impulsion à l'état haut). la GV complètement Bordé
+
+
+Classe Ouverture_Grand_Voile :
+	privé :
+		Attributs :
+			//SE1
+			(float) Cap_Actuel
+			(float) Direction_VA //Vent Appparent
+			
+			//SE2
+			//bool Mod_Nav //Stocke l'infos si on est face au vent ou bien sous le vent
+			
+			//SE4&3
+			float Gite
+			
+			//SE5
+			float Angle_GV//position Angulaire GV
+			
+		Méthodes :
+			//SE1
+			//récupère les valeurs des capteurs des autres groupes et les stockes dans les bon attributs (Cap_actuel,Drirection_VA, Mod_Nav)
+			void Init_GV(float Boussole, float Girouette, float IMU_Gite);
+			
+			//SE2
+			void Mode_Navigation(Cap_Actuel, Direction_VA)//Si l'angle |Cap_Atuel - Girouette| < 90° on est face au vent. Sinon sous le vent
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------			
+			//SE3
+			void Angle_Opti_FV(Cap_Actuel, Direction_VA)//détermine l'angle Optimal Voile/Vent Apparent en navigation face au vent
+			void RG_Face_au_Vent(Cap_Actuel, Direction_VA, Gite)//donne la position des voiles en navigation face au vent
+			
+			
+			//SE4
+			void Angle_Opti_SV(Cap_Actuel, Direction_VA)//détermine l'angle Optimal Voile/Vent Apparent en navigation sous le vent
+			void RG_Sous_le_Vent(Cap_Actuel, Direction_VA)//donne la position des voiles en navigation sous le vent
+			
+			
+			//SE5
+			void pos_moteur(Angle_GV)
+			
+			
+			
+			
+	public : 
+		void System_GV(float Boussole, float Girouette, float IMU_Gite)//fonction Gérant l'asservissement de la GV
+		
+		
+		
+		
+Détermination de Angle_Opti_SV : 
+	Orientation = (Cap_Actuel - Direction_VA)
+	si Orientation > -180° & Orientation < 90°
+		Angle_GV = (Abs(Direction_VA - 90))%180
+	si Orientation > 0° & Orientation < 45 °
+		Angle_GV = 90°
+	si Orientation > 45° & Orientation < 90 °
+		Angle_GV = 0°
+		
+		
+Détermination de Angle_Opti_FV : 
+	Orientation = (Cap_Actuel - Direction_VA)
+	si Abs(Orientation) > 140°
+		Angle_GV = (0°)//trop face au vent, on borde
+	si Orientation > 0°
+		Angle_GV = 0°
+	si Orientation > 40° & Orientation < 90 °
+		Angle_GV = (45/50)*(Direction_VA-90°) + 90°
+
+	
+		
+		
+		
+
+//SE5
+void pos_moteur(Angle_GV)
+	: POS_MAX_Choq 1.32 
+	  POS_MIN_Bord 1.8  
+	  
+	  temps_position_mooteur = Angle_GV / 90 * (1.8 - 1.32)
+	  écrire pendant ce temps là sur la bonne broche un état haut de manière non bloquante 
+	
+
+			
