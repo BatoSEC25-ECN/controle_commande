@@ -5,7 +5,7 @@ import serial.tools.list_ports
 # Classe pour stocker les informations du port
 class SerialPort:
     def __init__(self):
-        self.Name = "COM3"
+        self.Name = "COM5"
         self.Speed = 9600
 
 myport = SerialPort()

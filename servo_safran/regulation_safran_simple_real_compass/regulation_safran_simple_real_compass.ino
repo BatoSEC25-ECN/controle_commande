@@ -79,8 +79,8 @@ const int dt = 50;
 const int offset = 90;
 
 void setup() {
-  // Configuration de Serial1 avec 9600 bauds, 8 data bits, aucune parité, 1 stop bit pour le module Xbee
-  Serial1.begin(9600, SERIAL_8N1);                 
+  // Configuration de Serial2 avec 9600 bauds, 8 data bits, aucune parité, 1 stop bit pour le module Xbee
+  Serial2.begin(9600, SERIAL_8N1);                 
   Serial.begin(115200);
 
   // Initialize i2c network
@@ -143,10 +143,10 @@ void loop() {
   ///////////////////////////////////////////////////////
   String receivedString = ""; // Chaîne pour stocker les données reçues
 
-  if (Serial1.available()) {
-    // Lire la chaîne complète envoyée via Serial1
-    while (Serial1.available()) {
-      char c = Serial1.read();
+  if (Serial2.available()) {
+    // Lire la chaîne complète envoyée via Serial2
+    while (Serial2.available()) {
+      char c = Serial2.read();
       receivedString += c; // Construire la chaîne reçue
       delay(10); // Petit délai pour s'assurer que tous les caractères arrivent
     }
