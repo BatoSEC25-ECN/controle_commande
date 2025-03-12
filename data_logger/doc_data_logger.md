@@ -8,7 +8,7 @@ Le microcontrôleur utilisé pour ce projet est le Pico H.
 
 <div align="center">
 
-![Pin out pico](./asset/pico_pinout.png)
+![Pin out pico](./assets/pico_pinout.png)
 Pinout PICO
 </div>
 
@@ -25,7 +25,7 @@ Pinout PICO
 
 <div align="center">
 
-![Data Logger Breadboard](./asset/data_logger_breadboard.png)
+![Data Logger Breadboard](./assets/data_logger_breadboard.png)
 Data Logger Breadboard
 </div>
 
