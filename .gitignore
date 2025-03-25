@@ -266,3 +266,5 @@ cython_debug/
 */.vscode/
 */.DS_Store
 .DS_Store
+
+recup_sd_files/

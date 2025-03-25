@@ -76,6 +76,7 @@ void processDirectory(File dir, String path) {
         int bytesRead = entry.read(buffer, bufferSize);
         // On transmet en binaire directement sur le port série
         Serial.write(buffer, bytesRead);
+        delay(1); // Délai pour éviter les pertes de données
       }
       
       // Fin du fichier : marqueur de fin
