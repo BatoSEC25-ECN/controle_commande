@@ -148,7 +148,7 @@ def delete_directory(ser, dir_path):
 
 def main():
     # Configuration du port série
-    port = "COM17"  # Remplacez par le port de votre microcontrôleur
+    port = "COM18"  # Remplacez par le port de votre microcontrôleur
     baudrate = 115200
 
     try:
