@@ -1,0 +1,54 @@
+Réglage manuel des positions min et max du servo-moteur
+Introduction :
+Ce programme a pour objectif de permettre à l’utilisateur de régler manuellement les positions minimales et maximales d’un servo-moteur (grand-voile ou autre) connecté à la carte STM32 Nucleo L432KC. L’utilisateur peut interagir directement via la liaison série pour ajuster les positions et valider les valeurs.
+
+Fonctionnalités principales :
+✅ Démarrage interactif (validation de départ)
+✅ Saisie de la valeur de référence et du pas d’ajustement
+✅ Réglage de la position minimale par décrémentation
+✅ Réglage de la position maximale par incrémentation
+✅ Sauvegarde des valeurs min et max trouvées
+✅ Validation finale ou reprise du processus si nécessaire
+
+Description étape par étape :
+1️⃣ Initialisation
+Le programme initialise la communication série (115200 bauds) et configure le servo sur la broche spécifiée.
+
+2️⃣ Démarrage interactif
+L’utilisateur est invité à appuyer sur ‘o’ pour lancer le processus. Ensuite, il saisit la valeur de référence (position neutre) et le pas de réglage.
+
+3️⃣ Réglage du minimum
+
+Le servo est décrémenté progressivement par pas.
+
+Après chaque pas, l’utilisateur décide de continuer (‘o’) ou d’arrêter (‘n’).
+
+La valeur atteinte est sauvegardée comme valeur minimale.
+
+4️⃣ Réglage du maximum
+
+De la même manière, le servo est incrémenté par pas.
+
+L’utilisateur valide la position maximale atteinte.
+
+5️⃣ Validation finale
+
+Les valeurs min et max sont affichées.
+
+L’utilisateur valide (‘o’) si les valeurs conviennent.
+
+Sinon, le processus de réglage recommence.
+
+Avantages de la méthode
+🔧 Pas de besoin d’interface graphique externe : seulement un terminal série.
+🔧 Contrôle fin et précis des positions extrêmes.
+🔧 Vérification en temps réel (visuel et série).
+
+Utilisation prévue
+Cette méthode est idéale pour calibrer le débattement maximal d’un servo pour éviter les contraintes mécaniques excessives pour notre grand-voile du voilier autonome).
+
+💡 Conclusion
+Ce petit outil de réglage offre un moyen simple, interactif et précis pour trouver et ajuster les valeurs optimales du servo. Une fois la phase de réglage terminée, les valeurs min et max peuvent ensuite être exploitées dans le programme principal de pilotage du servo.
+Comme amélioration, on pourrait l'implémenter sur la carte avec les autre programmes, mettre une option pour que l'os boot sur le programme de navigation autonome sauf si on appuie sur un bouton pour effectuer les réglages.
+Lors de son utilisation, il faudra penser à stocker la valeur en mémoire morte afin de la sauvegarder lors d'un reboot,
+et à charger cette valeur en ram au démarrage du programme de navigation.
